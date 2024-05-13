@@ -11,6 +11,7 @@ import com.binted.Binted.repository.RecordRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,5 +29,13 @@ public class ExerciseService implements ExerciseServiceInterface{
         List<RecordEntity> records = recordRepository.findByExercise(exercise);
 
         return ExerciseMapper.mapToExerciseDto(exercise, records);
+    }
+
+    public ExerciseDto createExercise(ExerciseDto request) {
+        ExerciseEntity exerciseEntity = new ExerciseEntity();
+        exerciseEntity.setName(request.getName());
+        exerciseEntity.setGoal(request.getGoal());
+        exerciseRepository.save(exerciseEntity);
+        return ExerciseMapper.mapToExerciseDto(exerciseEntity, Collections.emptyList());
     }
 }
