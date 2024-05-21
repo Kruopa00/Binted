@@ -10,6 +10,7 @@ import com.binted.Binted.repository.ExerciseRepository;
 import com.binted.Binted.repository.RecordRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.Collections;
 import java.util.List;
@@ -18,10 +19,11 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@RequestScope
 public class ExerciseService implements ExerciseServiceInterface{
 
     private final RecordRepository recordRepository;
-    private ExerciseRepository exerciseRepository;
+    private final ExerciseRepository exerciseRepository;
 
     public ExerciseDto getExerciseById(Long id) {
         ExerciseEntity exercise = exerciseRepository.findById(id).orElse(null);
@@ -37,5 +39,13 @@ public class ExerciseService implements ExerciseServiceInterface{
         exerciseEntity.setGoal(request.getGoal());
         exerciseRepository.save(exerciseEntity);
         return ExerciseMapper.mapToExerciseDto(exerciseEntity, Collections.emptyList());
+    }
+
+    public List<ExerciseDto> getAllExercises() {
+        List<ExerciseEntity> exercises = exerciseRepository.findAll();
+        return exercises.stream().map(exercise -> {
+            List<RecordEntity> records = recordRepository.findByExercise(exercise);
+            return ExerciseMapper.mapToExerciseDto(exercise, records);
+        }).collect(Collectors.toList());
     }
 }
