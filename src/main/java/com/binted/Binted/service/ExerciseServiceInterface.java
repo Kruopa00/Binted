@@ -4,4 +4,6 @@ import com.binted.Binted.dto.ExerciseDto;
 
 public interface ExerciseServiceInterface {
     public ExerciseDto getExerciseById(Long id);
+
+    public ExerciseDto createExercise(ExerciseDto request);
 }

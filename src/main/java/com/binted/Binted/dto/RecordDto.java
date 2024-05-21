@@ -16,4 +16,5 @@ public class RecordDto {
     private Integer reps;
     private Integer sets;
     private String comment;
+    private Long exerciseId;
 }

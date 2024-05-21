@@ -20,4 +20,5 @@ public class ExerciseMapper {
                 records.stream().map((record) -> RecordMapper.mapToRecordDto(record)).collect(Collectors.toList())
         );
     }
+
 }
