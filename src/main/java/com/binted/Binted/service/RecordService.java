@@ -19,17 +19,16 @@ import java.util.List;
 public class RecordService implements RecordServiceInterface{
 
     private final RecordRepository recordRepository;
-    private final ExerciseService exerciseService;
     private final ExerciseRepository exerciseRepository;
 
     public RecordDto createRecord(RecordDto record) {
         RecordEntity recordEntity = RecordMapper.mapToRecordEntity(record);
 
-        ExerciseEntity exercise = exerciseRepository.getReferenceById(record.getExerciseId());
+        ExerciseEntity exercise = exerciseRepository.findExerciseById(record.getExerciseId());
         recordEntity.setExercise(exercise);
 
-        recordEntity = recordRepository.save(recordEntity);
+        RecordEntity recordEntityNew = recordRepository.save(recordEntity);
 
-        return RecordMapper.mapToRecordDto(recordEntity);
+        return RecordMapper.mapToRecordDto(recordEntityNew);
     }
 }

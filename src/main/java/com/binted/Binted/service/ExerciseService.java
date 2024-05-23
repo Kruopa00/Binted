@@ -26,7 +26,7 @@ public class ExerciseService implements ExerciseServiceInterface{
     private final ExerciseRepository exerciseRepository;
 
     public ExerciseDto getExerciseById(Long id) {
-        ExerciseEntity exercise = exerciseRepository.findById(id).orElse(null);
+        ExerciseEntity exercise = exerciseRepository.findExerciseById(id);
 
         List<RecordEntity> records = recordRepository.findByExercise(exercise);
 
