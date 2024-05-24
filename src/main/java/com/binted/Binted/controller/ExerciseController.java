@@ -1,25 +1,22 @@
 package com.binted.Binted.controller;
 
-
 import com.binted.Binted.dto.ExerciseDto;
-import com.binted.Binted.mapper.ExerciseMapper;
-import com.binted.Binted.repository.RecordRepository;
 import com.binted.Binted.service.ExerciseService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.annotation.SessionScope;
+
 import java.util.List;
 
 @RestController
 @AllArgsConstructor
+@SessionAttributes("exercise")
 @SessionScope
 public class ExerciseController {
 
     private final ExerciseService exerciseService;
-    private final RecordRepository recordRepository;
-
 
     @GetMapping("/exercise")
     public ResponseEntity<ExerciseDto> getExerciseAndLogs(@RequestParam(value = "id") Long id) {
@@ -38,5 +35,15 @@ public class ExerciseController {
         List<ExerciseDto> exercises = exerciseService.getAllExercises();
         return ResponseEntity.ok(exercises);
     }
-}
 
+    @PutMapping("/exercise/{id}")
+    public ResponseEntity<ExerciseDto> updateExercise(@PathVariable Long id, @RequestBody ExerciseDto request) {
+        ExerciseDto updatedExercise = exerciseService.updateExercise(id, request);
+        return ResponseEntity.ok(updatedExercise);
+    }
+
+    @ModelAttribute("exercise")
+    public ExerciseDto getExerciseSession() {
+        return new ExerciseDto();
+    }
+}
