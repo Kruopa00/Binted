@@ -9,6 +9,7 @@ import com.binted.Binted.mapper.RecordMapper;
 import com.binted.Binted.repository.ExerciseRepository;
 import com.binted.Binted.repository.RecordRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Primary
 public class RecordService implements RecordServiceInterface{
 
     private final RecordRepository recordRepository;
