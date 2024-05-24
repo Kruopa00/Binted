@@ -27,7 +27,12 @@ public class ExerciseService implements ExerciseServiceInterface {
 
     @Override
     public ExerciseDto getExerciseById(Long id) {
+<<<<<<< edit-goal-functionality
         ExerciseEntity exercise = exerciseRepository.findById(id).orElse(null);
+=======
+        ExerciseEntity exercise = exerciseRepository.findExerciseById(id);
+
+>>>>>>> master
         List<RecordEntity> records = recordRepository.findByExercise(exercise);
         return ExerciseMapper.mapToExerciseDto(exercise, records);
     }
