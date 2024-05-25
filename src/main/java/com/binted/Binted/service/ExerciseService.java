@@ -13,9 +13,11 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.hibernate.StaleObjectStateException;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import lombok.Builder;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
-
 
 import java.util.Collections;
 import java.util.List;
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequestScope
+@Qualifier("exerciseService")
 @AllArgsConstructor
 public class ExerciseService implements ExerciseServiceInterface {
 
@@ -44,6 +47,11 @@ public class ExerciseService implements ExerciseServiceInterface {
         exerciseEntity.setGoal(request.getGoal());
         exerciseRepository.save(exerciseEntity);
         return ExerciseMapper.mapToExerciseDto(exerciseEntity, Collections.emptyList());
+    }
+
+    @Override
+    public void deleteExercise(Long id){
+        exerciseRepository.deleteById(id);
     }
 
     @Override
@@ -83,7 +91,6 @@ public class ExerciseService implements ExerciseServiceInterface {
                 throw new RuntimeException("Optimistic locking failure: " + exception.getMessage(), exception);
             }
         } else {
-            System.out.println("lololo5");
             throw new RuntimeException("Exercise not found");
         }
     }
