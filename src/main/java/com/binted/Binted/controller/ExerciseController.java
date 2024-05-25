@@ -36,6 +36,12 @@ public class ExerciseController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdExercise);
     }
 
+    @DeleteMapping("/exercise")
+    public ResponseEntity<String> deleteExercise(@RequestParam(value = "id") Long id) {
+        exerciseService.deleteExercise(id);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/exercises")
     public ResponseEntity<List<ExerciseDto>> getAllExercises() {
         List<ExerciseDto> exercises = exerciseService.getAllExercises();
