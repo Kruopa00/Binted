@@ -16,6 +16,7 @@ import org.springframework.web.context.annotation.SessionScope;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @AllArgsConstructor
 @SessionAttributes("exercise")
