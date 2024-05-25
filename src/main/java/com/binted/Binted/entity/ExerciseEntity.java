@@ -1,12 +1,16 @@
 package com.binted.Binted.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity(name = "exercise")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ExerciseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

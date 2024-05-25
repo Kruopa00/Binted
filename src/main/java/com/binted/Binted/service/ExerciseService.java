@@ -9,6 +9,9 @@ import com.binted.Binted.mapper.RecordMapper;
 import com.binted.Binted.repository.ExerciseRepository;
 import com.binted.Binted.repository.RecordRepository;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
 
@@ -19,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequestScope
+@Qualifier("exerciseService")
 @AllArgsConstructor
 public class ExerciseService implements ExerciseServiceInterface {
 
