@@ -46,6 +46,11 @@ public class ExerciseService implements ExerciseServiceInterface {
     }
 
     @Override
+    public void deleteExercise(Long id){
+        exerciseRepository.deleteById(id);
+    }
+
+    @Override
     public List<ExerciseDto> getAllExercises() {
         List<ExerciseEntity> exercises = exerciseRepository.findAll();
         return exercises.stream().map(exercise -> {

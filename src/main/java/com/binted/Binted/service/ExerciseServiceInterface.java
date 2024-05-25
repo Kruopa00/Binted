@@ -9,6 +9,8 @@ public interface ExerciseServiceInterface {
 
     public ExerciseDto createExercise(ExerciseDto request);
 
+    public void deleteExercise(Long id);
+
     public List<ExerciseDto> getAllExercises();
 
     public ExerciseDto updateExercise(Long id, ExerciseDto request);

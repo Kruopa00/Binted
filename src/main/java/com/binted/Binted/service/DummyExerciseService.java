@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @RequestScope
 @Qualifier("dummyExerciseService")
-public class DummyExerciseService implements ExerciseServiceInterface{
+public abstract class DummyExerciseService implements ExerciseServiceInterface{
 
     private final RecordRepository recordRepository;
     private final ExerciseRepository exerciseRepository;
