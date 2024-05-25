@@ -1,21 +1,16 @@
 package com.binted.Binted.service;
 
 import com.binted.Binted.dto.ExerciseDto;
-import com.binted.Binted.dto.RecordDto;
 import com.binted.Binted.entity.ExerciseEntity;
 import com.binted.Binted.entity.RecordEntity;
 import com.binted.Binted.mapper.ExerciseMapper;
-import com.binted.Binted.mapper.RecordMapper;
 import com.binted.Binted.repository.ExerciseRepository;
 import com.binted.Binted.repository.RecordRepository;
 import jakarta.persistence.OptimisticLockException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.hibernate.StaleObjectStateException;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
-import lombok.Builder;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
 
@@ -73,21 +68,14 @@ public class ExerciseService implements ExerciseServiceInterface {
             try {
                 Thread.sleep(5000); // Simulate delay to provoke concurrent modification
                 exerciseRepository.save(exerciseEntity);
-                System.out.println("lololo1");
-
                 List<RecordEntity> records = recordRepository.findByExercise(exerciseEntity);
-                System.out.println("lololo2");
 
                 return ExerciseMapper.mapToExerciseDto(exerciseEntity, records);
             } catch (InterruptedException e) {
-                System.out.println("lololo3");
                 throw new RuntimeException(e);
             } catch (OptimisticLockException | ObjectOptimisticLockingFailureException e) {
-                System.out.println("lololo4");
-                // Handle the exception, possibly retry the operation or return a specific response
                 throw new RuntimeException("Optimistic locking failure: " + e.getMessage(), e);
             } catch (Exception exception) {
-                System.out.println("lololo4.2");
                 throw new RuntimeException("Optimistic locking failure: " + exception.getMessage(), exception);
             }
         } else {
