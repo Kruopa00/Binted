@@ -1,17 +1,16 @@
 package com.binted.Binted.service;
 
 import com.binted.Binted.dto.ExerciseDto;
-import com.binted.Binted.dto.RecordDto;
 import com.binted.Binted.entity.ExerciseEntity;
 import com.binted.Binted.entity.RecordEntity;
 import com.binted.Binted.mapper.ExerciseMapper;
-import com.binted.Binted.mapper.RecordMapper;
 import com.binted.Binted.repository.ExerciseRepository;
 import com.binted.Binted.repository.RecordRepository;
+import jakarta.persistence.OptimisticLockException;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
 
@@ -59,16 +58,26 @@ public class ExerciseService implements ExerciseServiceInterface {
         }).collect(Collectors.toList());
     }
 
-    @Override
+    @Transactional
     public ExerciseDto updateExercise(Long id, ExerciseDto request) {
         Optional<ExerciseEntity> optionalExercise = exerciseRepository.findById(id);
         if (optionalExercise.isPresent()) {
             ExerciseEntity exerciseEntity = optionalExercise.get();
             exerciseEntity.setName(request.getName());
             exerciseEntity.setGoal(request.getGoal());
-            exerciseRepository.save(exerciseEntity);
-            List<RecordEntity> records = recordRepository.findByExercise(exerciseEntity);
-            return ExerciseMapper.mapToExerciseDto(exerciseEntity, records);
+            try {
+                Thread.sleep(5000); // Simulate delay to provoke concurrent modification
+                exerciseRepository.save(exerciseEntity);
+                List<RecordEntity> records = recordRepository.findByExercise(exerciseEntity);
+
+                return ExerciseMapper.mapToExerciseDto(exerciseEntity, records);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            } catch (OptimisticLockException | ObjectOptimisticLockingFailureException e) {
+                throw new RuntimeException("Optimistic locking failure: " + e.getMessage(), e);
+            } catch (Exception exception) {
+                throw new RuntimeException("Optimistic locking failure: " + exception.getMessage(), exception);
+            }
         } else {
             throw new RuntimeException("Exercise not found");
         }
