@@ -13,6 +13,10 @@ public class ExerciseEntity {
   private Long id;
   private String name;
   private String goal;
+
+  @Version
+  private Long version;
+
   @ManyToOne
   @JoinColumn(name = "user_id")
   private UserEntity user;
@@ -47,4 +51,13 @@ public class ExerciseEntity {
     this.user = user;
     return this;
   }
+
+  public Long getVersion() {
+    return version;
+  }
+  public ExerciseEntity setVersion(Long version) {
+    this.version = version;
+    return this;
+  }
+
 }

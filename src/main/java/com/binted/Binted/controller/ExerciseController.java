@@ -2,9 +2,11 @@ package com.binted.Binted.controller;
 
 import com.binted.Binted.dto.ExerciseDto;
 import com.binted.Binted.service.ExerciseService;
+import jakarta.persistence.OptimisticLockException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.annotation.SessionScope;
 
@@ -37,9 +39,14 @@ public class ExerciseController {
     }
 
     @PutMapping("/exercise/{id}")
-    public ResponseEntity<ExerciseDto> updateExercise(@PathVariable Long id, @RequestBody ExerciseDto request) {
-        ExerciseDto updatedExercise = exerciseService.updateExercise(id, request);
-        return ResponseEntity.ok(updatedExercise);
+    public ResponseEntity<Object> updateExercise(@PathVariable Long id, @RequestBody ExerciseDto request) {
+        ExerciseDto updatedExercise = null;
+        try {
+            updatedExercise = exerciseService.updateExercise(id, request);
+            return ResponseEntity.ok(updatedExercise);
+        } catch (OptimisticLockException | ObjectOptimisticLockingFailureException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict occurred while updating. Please decide whether to cancel the changes or overwrite them.");
+        }
     }
 
     @ModelAttribute("exercise")
