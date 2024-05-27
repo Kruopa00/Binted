@@ -21,21 +21,29 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 @Qualifier("dummyExerciseService")
-public abstract class DummyExerciseService implements ExerciseServiceInterface{
+public class DummyExerciseService implements ExerciseServiceInterface{
 
     private final RecordRepository recordRepository;
     private final ExerciseRepository exerciseRepository;
 
+    @Override
     public ExerciseDto getExerciseById(Long id) {
         ExerciseDto exerciseDto = new ExerciseDto(1L, "dummy exercise", "dummy goal", null);
         return exerciseDto;
     }
 
+    @Override
     public ExerciseDto createExercise(ExerciseDto request) {
         ExerciseDto exerciseDto = new ExerciseDto(1L, "dummy exercise", "dummy goal", null);
         return exerciseDto;
     }
 
+    @Override
+    public void deleteExercise(Long id){
+        return;
+    }
+
+    @Override
     public List<ExerciseDto> getAllExercises() {
         List<ExerciseDto> exercises = new ArrayList<>();
         ExerciseDto exerciseDto = new ExerciseDto(1L, "dummy exercise", "dummy goal", null);
@@ -44,5 +52,11 @@ public abstract class DummyExerciseService implements ExerciseServiceInterface{
         exercises.add(exerciseDto2);
 
         return exercises;
+    }
+
+    @Override
+    public ExerciseDto updateExercise(Long id, ExerciseDto request){
+        ExerciseDto exerciseDto = new ExerciseDto(1L, "dummy exercise", "dummy goal", null);
+        return exerciseDto;
     }
 }
