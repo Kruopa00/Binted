@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-@RequestScope
 @Qualifier("dummyExerciseService")
 public abstract class DummyExerciseService implements ExerciseServiceInterface{
 

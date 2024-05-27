@@ -1,6 +1,8 @@
 package com.binted.Binted.service;
 
 import com.binted.Binted.dto.ExerciseDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -11,7 +13,7 @@ public interface ExerciseServiceInterface {
 
     public void deleteExercise(Long id);
 
-    public List<ExerciseDto> getAllExercises();
+    Page<ExerciseDto> getAllExercises(Pageable pageable);
 
     public ExerciseDto updateExercise(Long id, ExerciseDto request);
 }

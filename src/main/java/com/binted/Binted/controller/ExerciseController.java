@@ -8,19 +8,20 @@ import lombok.AllArgsConstructor;
 import org.hibernate.service.spi.InjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.annotation.SessionScope;
+import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @AllArgsConstructor
-@SessionAttributes("exercise")
-@SessionScope
 public class ExerciseController {
 
     @Autowired
@@ -46,8 +47,8 @@ public class ExerciseController {
     }
 
     @GetMapping("/exercises")
-    public ResponseEntity<List<ExerciseDto>> getAllExercises() {
-        List<ExerciseDto> exercises = exerciseService.getAllExercises();
+    public ResponseEntity<Page<ExerciseDto>> getAllExercises(@PageableDefault(size = 5) Pageable pageable) {
+        Page<ExerciseDto> exercises = exerciseService.getAllExercises(pageable);
         return ResponseEntity.ok(exercises);
     }
 

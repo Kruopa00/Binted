@@ -10,12 +10,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 public interface RecordRepository extends JpaRepository<RecordEntity, Long> {
-    @Query("select r from record r where r.exercise = :exerciseId")
+    @Query("select r from record r where r.exercise = :exerciseId order by r.date")
     List<RecordEntity> findByExercise(@Param("exerciseId") ExerciseEntity exerciseId);
 
-    //@Query(value = "select * from record where exercise_id = :exerciseId order by id desc limit 3", nativeQuery = true)
-    //List<RecordEntity> findMostRecentByExercise(@Param("exerciseId") Long exerciseId);
+    @Query("select r from record r where r.exercise = :exerciseId order by r.date desc limit 3")
+    List<RecordEntity> findMostRecentByExercise(@Param("exerciseId") ExerciseEntity exerciseId);
 }

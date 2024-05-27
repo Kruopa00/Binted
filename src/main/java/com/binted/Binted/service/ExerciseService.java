@@ -9,18 +9,17 @@ import com.binted.Binted.repository.RecordRepository;
 import jakarta.persistence.OptimisticLockException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
-@RequestScope
 @Qualifier("exerciseService")
 @AllArgsConstructor
 public class ExerciseService implements ExerciseServiceInterface {
@@ -50,12 +49,12 @@ public class ExerciseService implements ExerciseServiceInterface {
     }
 
     @Override
-    public List<ExerciseDto> getAllExercises() {
-        List<ExerciseEntity> exercises = exerciseRepository.findAll();
-        return exercises.stream().map(exercise -> {
-            List<RecordEntity> records = recordRepository.findByExercise(exercise);
+    public Page<ExerciseDto> getAllExercises(Pageable pageable) {
+        Page<ExerciseEntity> exercises = exerciseRepository.findAll(pageable);
+        return exercises.map(exercise -> {
+            List<RecordEntity> records = recordRepository.findMostRecentByExercise(exercise);
             return ExerciseMapper.mapToExerciseDto(exercise, records);
-        }).collect(Collectors.toList());
+        });
     }
 
     @Transactional
@@ -75,8 +74,6 @@ public class ExerciseService implements ExerciseServiceInterface {
                 throw new RuntimeException(e);
             } catch (OptimisticLockException | ObjectOptimisticLockingFailureException e) {
                 throw new RuntimeException("Optimistic locking failure: " + e.getMessage(), e);
-            } catch (Exception exception) {
-                throw new RuntimeException("Optimistic locking failure: " + exception.getMessage(), exception);
             }
         } else {
             throw new RuntimeException("Exercise not found");
