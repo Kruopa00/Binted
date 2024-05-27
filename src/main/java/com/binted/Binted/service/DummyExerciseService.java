@@ -9,13 +9,14 @@ import com.binted.Binted.repository.RecordRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
 
-import java.util.AbstractList;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,13 +45,8 @@ public class DummyExerciseService implements ExerciseServiceInterface{
     }
 
     @Override
-    public List<ExerciseDto> getAllExercises() {
-        List<ExerciseDto> exercises = new ArrayList<>();
-        ExerciseDto exerciseDto = new ExerciseDto(1L, "dummy exercise", "dummy goal", null);
-        ExerciseDto exerciseDto2 = new ExerciseDto(2L, "dummy exercise2", "dummy goal2", null);
-        exercises.add(exerciseDto);
-        exercises.add(exerciseDto2);
-
+    public Page<ExerciseDto> getAllExercises(Pageable pageable){
+        Page<ExerciseDto> exercises = null;
         return exercises;
     }
 
